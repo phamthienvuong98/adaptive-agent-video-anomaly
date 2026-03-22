@@ -1,0 +1,43 @@
+# Data files
+data/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Checkpoints
+checkpoints/
+*.pth
+*.pt
+
+# Logs
+logs/
+runs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual env
+venv/
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs
+*.png
+evaluation_report.txt
