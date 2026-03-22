@@ -1,7 +1,4 @@
-Dưới đây là **README hoàn chỉnh** (bạn copy vào repo → dùng Copilot build full project).
-Mình viết theo hướng **rõ yêu cầu + kiến trúc + TODO cụ thể** để Copilot hiểu đúng.
 
----
 
 # 🚨 AI Agent for Video Anomaly Detection in Smart City Surveillance
 
