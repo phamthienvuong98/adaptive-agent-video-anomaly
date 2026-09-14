@@ -1,0 +1,89 @@
+# configs/agent_config.yaml
+# Cấu hình toàn hệ thống VAD — 3-tier routing architecture
+
+system:
+  device: "cuda"          # cuda | cpu | mps
+  log_level: "INFO"
+  output_dir: "outputs/"
+  seed: 42
+  camera_config_path: "configs/camera_config.yaml"
+
+  frame_sampling:
+    strategy: "uniform"   # uniform | keyframe | motion_triggered
+    sample_rate: 1        # Lấy 1 frame mỗi N frame gốc
+    motion_threshold: 0.01
+
+# ─── Routing Agent ────────────────────────────────────────────────────────────
+# Chi tiết weights và thresholds trong routing_config.yaml
+routing_agent:
+  config_path: "configs/routing_config.yaml"
+
+  # Tier 1 model config
+  tier1:
+    backbone: "mobilenet_v3_small"
+    checkpoint: "checkpoints/tier1_mobilenet.pth"
+
+  # Tier 2 model config
+  tier2:
+    model_name: "ViT-B-16"
+    pretrained: "openai"
+
+# ─── Deep Reasoning Agent (Tier 3) ───────────────────────────────────────────
+deep_reasoning:
+  enabled: true
+
+  vlm_reasoner:
+    # Qwen2.5-VL-7B-Instruct với 4-bit quantization cho Colab T4
+    model_name: "Qwen/Qwen2.5-VL-7B-Instruct"
+    max_new_tokens: 256
+    temperature: 0.1
+    # QVAD-style: tối đa 2 vòng để giữ latency < 500ms
+    max_query_rounds: 2
+
+  llm_orchestrator:
+    model_name: "Qwen/Qwen3-4B"
+    max_new_tokens: 512
+    temperature: 0.0
+
+  # Per-camera FAISS memory (anomaly gate built-in: routing_score < 0.35)
+  rag_memory:
+    enabled: true
+    vector_store: "faiss"
+    embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+    top_k: 5
+    per_camera_memory: true
+    memory_dir: "data/per_camera_memory/"
+
+# ─── Alert Engine ─────────────────────────────────────────────────────────────
+alert_engine:
+  min_confidence: 0.6       # Chỉ alert khi confidence >= 0.6
+  cooldown_seconds: 10      # Không alert cùng 1 event trong 10s
+  output_formats:
+    - "json"
+    - "log"
+
+  # UCF-Crime 13 categories
+  anomaly_classes:
+    - "abuse"
+    - "arrest"
+    - "arson"
+    - "assault"
+    - "burglary"
+    - "explosion"
+    - "fighting"
+    - "road_accident"
+    - "robbery"
+    - "shooting"
+    - "shoplifting"
+    - "stealing"
+    - "vandalism"
+
+# ─── Datasets ─────────────────────────────────────────────────────────────────
+datasets:
+  ucf_crime:
+    root: "data/UCF_Crime/"
+    split: "test"
+    annotation_file: "data/UCF_Crime/Temporal_Anomaly_Annotation.txt"
+  xd_violence:
+    root: "data/XD_Violence/"
+    split: "test"

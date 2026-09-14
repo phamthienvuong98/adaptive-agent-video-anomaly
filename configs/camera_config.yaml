@@ -1,0 +1,51 @@
+# configs/camera_config.yaml
+# Per-camera metadata: risk level và context
+# Routing Agent dùng risk_numeric làm signal thứ 4 (weight 0.20)
+#
+# risk_levels:
+#   low:    0.3  (bãi biển, công viên, khu dân cư yên tĩnh)
+#   medium: 0.6  (trung tâm thương mại, nhà ga, khu vực đông người)
+#   high:   0.9  (sân bay, ngân hàng, khu vực an ninh cao)
+
+cameras:
+  default:
+    location: "unknown"
+    risk_level: "low"
+    risk_numeric: 0.3
+
+  # ── Ví dụ cameras ──────────────────────────────────────────────────────────
+  cam_airport:
+    location: "airport_terminal"
+    risk_level: "high"
+    risk_numeric: 0.9
+
+  cam_mall:
+    location: "shopping_mall"
+    risk_level: "medium"
+    risk_numeric: 0.6
+
+  cam_bank:
+    location: "bank_entrance"
+    risk_level: "high"
+    risk_numeric: 0.9
+
+  cam_park:
+    location: "city_park"
+    risk_level: "low"
+    risk_numeric: 0.3
+
+  cam_station:
+    location: "train_station"
+    risk_level: "medium"
+    risk_numeric: 0.6
+
+  cam_street:
+    location: "street_intersection"
+    risk_level: "medium"
+    risk_numeric: 0.5
+
+  # ── UCF-Crime evaluation cameras (generic) ─────────────────────────────────
+  ucf_cam_default:
+    location: "ucf_crime_dataset"
+    risk_level: "medium"
+    risk_numeric: 0.5

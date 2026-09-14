@@ -1,0 +1,63 @@
+# configs/model_config.yaml
+# Cấu hình weights và checkpoints cho từng model
+
+# ─── Tầng 1: Fast Filter ──────────────────────────────────────────────────────
+clip:
+  model_name: "ViT-B-16"
+  pretrained: "openai"
+  # Tự động download từ OpenAI nếu chưa có
+  cache_dir: "checkpoints/clip/"
+
+lightweight_cnn:
+  backbone: "mobilenet_v3_small"
+  # Checkpoint sau knowledge distillation (train xong thì điền path vào đây)
+  checkpoint: null            # "checkpoints/student_cnn.pth"
+  # Teacher model dùng để distill (chỉ cần khi training)
+  teacher_checkpoint: null    # "checkpoints/teacher_resnet50_lstm.pth"
+  # ImageNet pretrained weights (dùng khi chưa có checkpoint distillation)
+  use_imagenet_pretrained: true
+
+# ─── Tầng 2: Deep Reasoning ───────────────────────────────────────────────────
+vlm:
+  # Option 1: GPU ≥ 16GB — chất lượng cao nhất
+  high_end:
+    model_name: "Qwen/Qwen2.5-VL-7B-Instruct"
+    quantization: null
+    cache_dir: "checkpoints/vlm/"
+
+  # Option 2: GPU 8GB — cân bằng tốc độ/chất lượng
+  mid_range:
+    model_name: "llava-hf/llava-v1.6-mistral-7b-hf"
+    quantization: "int4"
+    cache_dir: "checkpoints/vlm/"
+
+  # Option 3: CPU only — chỉ dùng CLIP (bỏ qua VLM)
+  cpu_only:
+    model_name: null
+    quantization: null
+
+llm:
+  # Option 1: GPU ≥ 8GB
+  high_end:
+    model_name: "Qwen/Qwen3-4B"
+    quantization: null
+    cache_dir: "checkpoints/llm/"
+
+  # Option 2: GPU 4GB hoặc CPU
+  lightweight:
+    model_name: "Qwen/Qwen3-1.7B"
+    quantization: "int4"
+    cache_dir: "checkpoints/llm/"
+
+# ─── Sentence Transformer (RAG) ────────────────────────────────────────────────
+sentence_transformer:
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  cache_dir: "checkpoints/sentence_transformer/"
+
+# ─── Download URLs (dùng bởi scripts/download_models.py) ─────────────────────
+download:
+  # Các model được download tự động qua HuggingFace Hub
+  # Chỉ cần set HF_TOKEN nếu dùng model private
+  hf_token_env: "HF_TOKEN"
+  # Student CNN checkpoint (nếu có pre-trained từ nhóm nghiên cứu)
+  student_cnn_url: null

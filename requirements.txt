@@ -1,38 +1,46 @@
-# ============================================================
-# AI Agent for Video Anomaly Detection — Dependencies
-# ============================================================
+# Core deep learning
+torch>=2.1.0
+torchvision>=0.16.0
+transformers>=4.40.0
+accelerate>=0.27.0
 
-# Core
-torch>=2.0.0
-torchvision>=0.15.0
-torchaudio>=2.0.0
+# CLIP
+open-clip-torch>=2.24.0
 
-# Graph Neural Networks
-torch-geometric>=2.4.0
+# Video processing
+opencv-python>=4.9.0
+decord>=0.6.0
+imageio>=2.34.0
+ffmpeg-python>=0.2.0
 
-# Object Detection
-ultralytics>=8.0.0       # YOLOv8
+# LLM / VLM inference
+vllm>=0.4.0            # fast VLM serving (optional, GPU server)
+ollama>=0.1.0          # local LLM (alternative lightweight)
 
-# Computer Vision
-opencv-python>=4.8.0
-Pillow>=10.0.0
+# RAG / Vector store
+faiss-cpu>=1.8.0       # similarity search for RAG memory
+sentence-transformers>=2.7.0
 
-# Scientific
-numpy>=1.24.0
+# Pose detection (MoveNet Lightning)
+tensorflow>=2.15.0
+tensorflow-hub>=0.16.0
+
+# Scene complexity (entropy computation)
 scipy>=1.11.0
-scikit-learn>=1.3.0
-
-# Visualization
-matplotlib>=3.7.0
-seaborn>=0.12.0
-
-# Logging & Config
-tqdm>=4.65.0
-tensorboard>=2.14.0
-
-# Tracking (DeepSORT)
-deep-sort-realtime>=1.3.2
 
 # Utilities
+numpy>=1.26.0
+Pillow>=10.3.0
 pyyaml>=6.0
-pandas>=2.0.0
+tqdm>=4.66.0
+loguru>=0.7.0
+einops>=0.7.0
+
+# Evaluation
+scikit-learn>=1.4.0
+matplotlib>=3.8.0
+seaborn>=0.13.0
+
+# API / serving (optional)
+fastapi>=0.111.0
+uvicorn>=0.29.0
